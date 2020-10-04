@@ -1,23 +1,30 @@
 #include <iostream>
-#include <queue>
 #include <vector>
-#define n 7
+#include <queue>
+#include <limits>
 
 using namespace std;
 
-vector<int> tree[n];
-bool visit[n];
+int numOfVertices, numOfEdges;
+vector<int> list[21];
+bool visitedVertices[21];
+vector<int> minDistanceFromOne(21);
 
-void BFS(int startLevel){
+void BFS(int startVertex){
 
 	queue<int> myqueue;
-	myqueue.push(startLevel);
+	myqueue.push(startVertex);
+	visitedVertices[startVertex] = true;
 	while(!myqueue.empty()){
+		
 		int node = myqueue.front();
 		myqueue.pop();
-		cout << node << " ";
-		for(int i = 0; i < tree[node].size(); i++){
-			myqueue.push(tree[node][i]);
+		for(int i = 0; i < list[node].size(); i++){
+			if(visitedVertices[list[node][i]] == false){
+				visitedVertices[list[node][i]] = true;
+				myqueue.push(list[node][i]);
+				minDistanceFromOne[list[node][i]] += minDistanceFromOne[node] + 1;
+			}
 		}
 	}
 	
@@ -25,15 +32,21 @@ void BFS(int startLevel){
 
 int main(int argc, char** argv) {
 	
-	freopen("input.txt", "rt", stdin);
+	// freopen("input.txt", "rt", stdin);
 	
-	for(int i = 1; i < n; i++){
+	cin >> numOfVertices >> numOfEdges;
+	for(int i = 0; i < numOfEdges; i++){
 		int source, dest;
 		cin >> source >> dest;
-		tree[source].push_back(dest);
+		list[source].push_back(dest);
 	}
-
+	
+	visitedVertices[1] = true;
 	BFS(1);
+	
+	for(int i = 2; i <= numOfVertices; i++){
+		cout << i << " : " << minDistanceFromOne[i] << "\n";
+	}
 	
 	return 0;
 }
