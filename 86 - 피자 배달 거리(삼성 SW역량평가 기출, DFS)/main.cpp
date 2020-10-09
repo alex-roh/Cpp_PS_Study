@@ -8,35 +8,28 @@ using namespace std;
 
 int m, n;
 int minVal = INT_MAX;
-pair<int, int> selected[14];
+pair<int, int> selected[20];
 vector<pair<int, int>> houses;
 vector<pair<int, int>> pizzaHouses;
 
 void DFS(int startPos, int level){
 	
-	if(level == m){
+	if(level == m + 1){
 		
 		int total = 0;
 		
-		// 선택한 피자집 프린트
-		for(int i = 1; i <= m; i++){
-			cout << "pizza(" << selected[i].first << "," << selected[i].second << ")\n";
-		}
-		
-		// 총 배달 거리 검사 
-		for(int i = 0; i < houses.size(); i++){
+		// 최소 배달 거리의 총합 구하기 
+		for(int i = 1; i < houses.size(); i++){
 			int distFromThisHouse = INT_MAX;
-			for(int j = 0; j < m; j++){
-				
+			for(int j = 1; j <= m; j++){
 				int curDist = abs(selected[j].first - houses[i].first) 
 							+ abs(selected[j].second - houses[i].second);	
 				distFromThisHouse = min(distFromThisHouse, curDist);
 			
 			}
-			total += distFromThisHouse;		
+			total += distFromThisHouse;
 		}
 		
-		cout << "total = " << total << "\n\n";
 		if(total < minVal) minVal = total;
 		return;
 		
@@ -54,7 +47,10 @@ void DFS(int startPos, int level){
 
 int main(int argc, char** argv) {
 	
-	freopen("input.txt", "rt", stdin);
+	// freopen("input.txt", "rt", stdin);
+	
+	houses.push_back(make_pair(0, 0));
+	pizzaHouses.push_back(make_pair(0, 0));
 	
 	cin >> n >> m;
 	for(int i = 1; i <= n; i++){
@@ -70,7 +66,7 @@ int main(int argc, char** argv) {
 		}
 	}
 	
-	DFS(0, 0);
+	DFS(1, 1);
 	
 	cout << minVal;
 	
