@@ -18,11 +18,15 @@ void DFS(int vertex){
 	else{
 		
 		for(int i = 0; i < map[vertex].size(); i++){
-			// 해당 정점(map[vertex])의 노드(map[vertex][i])를 방문했는가? 
-			if(visited[map[vertex][i]] == false){
-				visited[map[vertex][i]] = true;
-				DFS(map[vertex][i]); // 해당 노드 방문
-				visited[map[vertex][i]] = false;
+			
+			vector<int> currentVertex = map[vertex];
+			int nodeToVisit = currentVertex[i];
+			
+			// 해당 정점(currentVertex)의 노드(nodeToVisit)를 방문했는가? 
+			if(visited[nodeToVisit] == false){
+				visited[nodeToVisit] = true;
+				DFS(nodeToVisit); // 해당 노드 방문
+				visited[nodeToVisit] = false;
 			}
 		}
 	}
